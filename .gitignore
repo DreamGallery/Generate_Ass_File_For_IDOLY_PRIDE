@@ -4,6 +4,3 @@
 *.mp4
 *.txt
 *.png
-!adv/
-!adv/cache/
-adv/cache/*
