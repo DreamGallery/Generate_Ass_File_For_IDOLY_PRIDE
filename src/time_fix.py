@@ -7,8 +7,9 @@ from src.adv_text import to_time
 import configparser
 
 
+BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
 config = configparser.ConfigParser()
-config.read("../config.ini", encoding="utf-8")
+config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
 FONT_PATH = config.get("File PATH", "FONT_PATH")
 CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 fontsize = config.getint("Font Config", "fontsize")
@@ -24,13 +25,13 @@ def time_fix(event: ass_events, start_file_index: int, target: str, stream: fram
     else:
         fillcolor = (255,255,255)
     draw_text(text, FONT_PATH, fontsize, strokewidth, kerning, fillcolor).save(f"../{CACHE_PATH}/text.png")
-    img = cv2.imread(f"../{CACHE_PATH}/text.png")
-    cv2.imwrite(f"../{CACHE_PATH}/binary.png",to_binary(img))
-    binary = cv2.imread(f"../{CACHE_PATH}/binary.png")
-    for root, dirs, files in os.walk(f"../{CACHE_PATH}/{target}"):
+    img = cv2.imread(f"{CACHE_PATH}/text.png")
+    cv2.imwrite(f"{CACHE_PATH}/binary.png",to_binary(img))
+    binary = cv2.imread(f"{CACHE_PATH}/binary.png")
+    for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
         files.sort(key=lambda x:float(x.replace("_", ".").split('.png')[0]))
         for file in files[start_file_index:]:
-            if compare(f"../{CACHE_PATH}/{target}/{file}", binary, threshold):
+            if compare(f"{CACHE_PATH}/{target}/{file}", binary, threshold):
                 start_time = float(file.split(".")[0].replace("_", ".")[:-1])
                 event.start = to_time(start_time)
                 break
@@ -46,7 +47,7 @@ def time_fix(event: ass_events, start_file_index: int, target: str, stream: fram
 
         try:
             for file in files[start_file_index:]:
-                if compare(f"../{CACHE_PATH}/{target}/{file}", binary, threshold):
+                if compare(f"{CACHE_PATH}/{target}/{file}", binary, threshold):
                     start_file_index = start_file_index + 1
                 else:
                     if float(file.split(".")[0].replace("_", ".")[:-1]) == float(file.split(".")[0].replace("_", ".")):

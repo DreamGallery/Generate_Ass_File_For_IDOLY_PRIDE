@@ -1,8 +1,10 @@
+import os
 import json
 import configparser
 
+BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
 config = configparser.ConfigParser()
-config.read("../config.ini", encoding="utf-8")
+config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
 TXT_PATH = config.get("File PATH", "TXT_PATH")
 player_name = config.get("Info", "player_name")
 KEY_MASSAGE = config.get("Text KEY", "KEY_MASSAGE")
@@ -15,7 +17,7 @@ KEY_TITLE = config.get("Text KEY", "KEY_TITLE")
 
 def extract(input: str) -> list:
     dial_list = []
-    with open(f"../{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
+    with open(f"{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
         for line in f:
             if "text" in line:
                 dial_list.append(line)
@@ -23,7 +25,7 @@ def extract(input: str) -> list:
 
 
 def get_title(input: str) -> str:
-    with open(f"../{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
+    with open(f"{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
         for line in f:
             if "title" in line:
                 title = line[1:-2].split(KEY_TITLE)[1].replace(" ", "_")
@@ -42,7 +44,7 @@ def get_text(input: str) -> tuple[str, bool]:
     elif KEY_NARRATION in input:
         text = input[1:-2].split(KEY_NARRATION)[1].split(f"\u0020{KEY_CLIP}")[0]
         gray = True
-    return [text,gray]
+    return text, gray
 
 
 def get_name(input: str) -> str:
