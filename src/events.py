@@ -1,4 +1,4 @@
-from adv_text import *
+from src.adv_text import *
 
 
 class ass_events(object):

@@ -1,7 +1,13 @@
 import cv2
 import os
 import sys
-from config import CACHE_PATH, VIDEO_PATH
+import configparser
+
+
+config = configparser.ConfigParser()
+config.read("../config.ini", encoding="utf-8")
+CACHE_PATH = config.get("File PATH", "CACHE_PATH")
+VIDEO_PATH = config.get("File PATH", "VIDEO_PATH")
 
 
 def to_binary(img: any) ->any:
@@ -32,9 +38,9 @@ class frame_time(object):
         return name
         
     def to_frame(self, input: str):
-        _image_folder_path = f"{CACHE_PATH}/{input.split('.')[0]}"
+        _image_folder_path = f"../{CACHE_PATH}/{input.split('.')[0]}"
         os.makedirs(_image_folder_path, exist_ok=True)
-        video_path = f"{VIDEO_PATH}/{input}"
+        video_path = f"../{VIDEO_PATH}/{input}"
         vc = cv2.VideoCapture(video_path)
         fps = vc.get(cv2.CAP_PROP_FPS)
         total_fps = vc.get(cv2.CAP_PROP_FRAME_COUNT)

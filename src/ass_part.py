@@ -1,5 +1,5 @@
-from styles import *
-from events import ass_events
+from src.styles import *
+from src.events import ass_events
 
 
 script_info = "\

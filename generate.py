@@ -1,8 +1,13 @@
-from adv_text import *
-from config import ASS_PATH
-from config import game_file_name
-from events import ass_events
-from ass_part import script_info, garbage, style, event
+import configparser
+from src.adv_text import *
+from src.events import ass_events
+from src.ass_part import script_info, garbage, style, event
+
+
+config = configparser.ConfigParser()
+config.read("config.ini", encoding="utf-8")
+ASS_PATH = config.get("File PATH", "ASS_PATH")
+game_file_name = config.get("Info", "game_file_name")
 
 
 #only convert from game file without time-fix by frame

@@ -1,12 +1,21 @@
 import json
-from config import TXT_PATH
-from config import player_name
-from config import KEY_MASSAGE, KEY_CLIP, KEY_NAME, KEY_NARRATION, KEY_THUMBNIAL, KEY_TITLE
+import configparser
+
+config = configparser.ConfigParser()
+config.read("../config.ini", encoding="utf-8")
+TXT_PATH = config.get("File PATH", "TXT_PATH")
+player_name = config.get("Info", "player_name")
+KEY_MASSAGE = config.get("Text KEY", "KEY_MASSAGE")
+KEY_CLIP = config.get("Text KEY", "KEY_CLIP")
+KEY_NAME = config.get("Text KEY", "KEY_NAME")
+KEY_NARRATION = config.get("Text KEY", "KEY_NARRATION")
+KEY_THUMBNIAL = config.get("Text KEY", "KEY_THUMBNIAL")
+KEY_TITLE = config.get("Text KEY", "KEY_TITLE")
 
 
 def extract(input: str) -> list:
     dial_list = []
-    with open(f"{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
+    with open(f"../{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
         for line in f:
             if "text" in line:
                 dial_list.append(line)
@@ -14,7 +23,7 @@ def extract(input: str) -> list:
 
 
 def get_title(input: str) -> str:
-    with open(f"{input}", 'r', encoding="utf8") as f:
+    with open(f"../{TXT_PATH}/{input}", 'r', encoding="utf8") as f:
         for line in f:
             if "title" in line:
                 title = line[1:-2].split(KEY_TITLE)[1].replace(" ", "_")
@@ -24,25 +33,25 @@ def get_title(input: str) -> str:
 
 def get_text(input: str) -> tuple[str, bool]:
     if KEY_MASSAGE in input:
-        text = input[1:-2].split(KEY_MASSAGE)[1].split(KEY_NAME)[0].replace("{user}", player_name)
+        text = input[1:-2].split(KEY_MASSAGE)[1].split(f"\u0020{KEY_NAME}")[0].replace("{user}", player_name)
         if "\uff08" in text or "\uff09" in text:
             text = text.replace("\uff08", "").replace("\uff09", "")
             gray = True
         else:
             gray = False
     elif KEY_NARRATION in input:
-        text = input[1:-2].split(KEY_NARRATION)[1].split(KEY_CLIP)[0]
+        text = input[1:-2].split(KEY_NARRATION)[1].split(f"\u0020{KEY_CLIP}")[0]
         gray = True
     return [text,gray]
 
 
 def get_name(input: str) -> str:
-    name = input[1:-2].split(KEY_NAME)[1].split(KEY_THUMBNIAL)[0]
+    name = input[1:-2].split(f"\u0020{KEY_NAME}")[1].split(f"\u0020{KEY_THUMBNIAL}")[0]
     return name
 
 
 def get_clip(input: str) -> any:
-    clip = input[1:-2].split(KEY_CLIP)[1].replace("\\", "")
+    clip = input[1:-2].split(f"\u0020{KEY_CLIP}")[1].replace("\\", "")
     data = json.loads(clip)
     return data
 

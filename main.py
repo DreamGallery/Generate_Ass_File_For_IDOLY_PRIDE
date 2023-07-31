@@ -1,12 +1,18 @@
 import sys
-from adv_text import *
-from config import ASS_PATH, TXT_PATH
-from config import game_file_name, video_file_name
-from events import ass_events
-from ass_part import script_info, garbage, style, event
-from time_fix import *
-from frame import *
+import configparser
+from src.adv_text import *
+from src.events import ass_events
+from src.ass_part import script_info, garbage, style, event
+from src.time_fix import *
+from src.frame import *
 
+
+config = configparser.ConfigParser()
+config.read("config.ini", encoding="utf-8")
+ASS_PATH = config.get("File PATH", "ASS_PATH")
+TXT_PATH = config.get("File PATH", "TXT_PATH")
+game_file_name = config.get("Info", "game_file_name")
+video_file_name = config.get("Info", "video_file_name")
 
 stream = frame_time()
 stream.to_frame(video_file_name)
@@ -27,7 +33,7 @@ for dial in list:
     sys.stdout.flush()
 
 try:
-    title = get_title(f"{TXT_PATH}/{game_file_name}")
+    title = get_title(f"{game_file_name}")
     with open(f"{ASS_PATH}/{title}.ass", "w", encoding="utf8") as fp:
         fp.write(content)
     print(f"\n{game_file_name} has been successfully converted to {title}.ass")

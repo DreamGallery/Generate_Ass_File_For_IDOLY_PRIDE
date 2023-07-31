@@ -1,11 +1,9 @@
 import cv2
 from PIL import Image, ImageDraw, ImageFont
-from frame import to_binary
-
 
 def draw_text(text: str, font_path: str, fontsize: int, strokewidth: int, kerning: int, fillcolor: (int, int, int)) ->Image:
     char_width = fontsize + strokewidth
-    font = ImageFont.truetype(f"{font_path}", fontsize)
+    font = ImageFont.truetype(f"../{font_path}", fontsize)
     text_bbox = font.getbbox(text, stroke_width=strokewidth)
     text_size = ((char_width * len(text) + strokewidth + (len(text)-1) * kerning), (text_bbox[3] - text_bbox[1]))
     text_img = Image.new('RGBA', text_size, color=fillcolor)
