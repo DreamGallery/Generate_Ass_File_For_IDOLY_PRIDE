@@ -2,18 +2,13 @@ import cv2
 import os
 import sys
 import configparser
+from src.match import to_binary
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
 config = configparser.ConfigParser()
 config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
 CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 VIDEO_PATH = config.get("File PATH", "VIDEO_PATH")
-
-
-def to_binary(img: any) ->any:
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret,binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-    return binary
 
 
 class frame_time(object):
@@ -33,7 +28,7 @@ class frame_time(object):
                 break
             milliseconds = vc.get(cv2.CAP_PROP_POS_MSEC) 
             seconds = '%.4f' %(milliseconds // 1000 + (milliseconds % 1000) / 1000)
-            name = ('%.3f' %(int(float(seconds) * 1000) / 1000)).replace(".", "_")
+            name = seconds[:-1].replace(".", "_")
             height = len(frame)
             width = len(frame[0])
             img = frame[(height*2//3):height, 0:width]

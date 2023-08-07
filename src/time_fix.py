@@ -1,10 +1,11 @@
 import cv2
 import os
+import configparser
+import numpy as np
 from src.match import *
 from src.frame import *
 from src.events import ass_events
 from src.adv_text import to_time
-import configparser
 
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
@@ -24,10 +25,8 @@ def time_fix(event: ass_events, start_file_index: int, target: str, stream: fram
         fillcolor = (0,0,0)
     else:
         fillcolor = (255,255,255)
-    draw_text(text, FONT_PATH, fontsize, strokewidth, kerning, fillcolor).save(f"../{CACHE_PATH}/text.png")
-    img = cv2.imread(f"{CACHE_PATH}/text.png")
-    cv2.imwrite(f"{CACHE_PATH}/binary.png",to_binary(img))
-    binary = cv2.imread(f"{CACHE_PATH}/binary.png")
+    img = np.asarray(draw_text(text, FONT_PATH, fontsize, strokewidth, kerning, fillcolor))
+    binary = to_binary(img)
     for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
         files.sort(key=lambda x:float(x.replace("_", ".").split('.png')[0]))
         for file in files[start_file_index:]:

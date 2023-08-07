@@ -16,8 +16,14 @@ def draw_text(text: str, font_path: str, fontsize: int, strokewidth: int, kernin
     return text_img
 
 
+def to_binary(img: any) ->any:
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret,binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+    return binary
+
+
 def compare(img_path: str, binary: any, threshold: float) ->bool:
-    img = cv2.imread(img_path)
+    img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2GRAY)
     res = cv2.matchTemplate(img, binary, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
     if max_val > threshold:
