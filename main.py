@@ -29,6 +29,8 @@ start_file_index = 0
 content = script_info + "\n" + garbage + "\n" + style + "\n" + event
 print("ASS-Generate-Progress start")
 for dial in list:
+    if "SkipTime" in dial:
+        start_file_index = start_file_index + int((float(str(dial).split(":")[1][:-1]) - 1) / (1 / stream.fps))
     _event = ass_events()
     _event.from_dialogue(dial)
     next_file_index = time_fix(_event, start_file_index, video_file_name.split(".")[0], stream)

@@ -27,6 +27,9 @@ def draw_text(text: str, font_path: str, fontsize: int, strokewidth: int, kernin
 
 def compare(img_path: str, binary: any, threshold: float, mask: any) ->bool:
     img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2GRAY)
+    white_pixels = cv2.countNonZero(img)
+    if white_pixels < 100:
+        return False
     res = cv2.matchTemplate(img, binary, cv2.TM_CCOEFF_NORMED, mask = mask)
     res[np.isinf(res)] = 0
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
