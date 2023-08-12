@@ -3,52 +3,52 @@ from src.adv_text import *
 
 class ass_events(object):
 
-    def __init__(self, layer: int = 0, start: str = "", end: str = "", duration: float = 0, style: str = "", name: str = "", marginL: int = 0, marginR: int = 0, marginV: int = 0, effect: str = "", text: str = "", narration: bool = False):
-        self.layer = layer
-        self.start = start
-        self.end = end
-        self.duration = duration
-        self.style = style
-        self.name = name
-        self.marginL = marginL
-        self.marginR = marginR
-        self.marginV = marginV
-        self.effect = effect
-        self.text = text
-        self.narration = narration
+    def __init__(self, Layer: int = 0, Start: str = "", End: str = "", Duration: float = 0, Style: str = "", Name: str = "", MarginL: int = 0, MarginR: int = 0, MarginV: int = 0, Effect: str = "", Text: str = ""):
+        self.Layer = Layer
+        self.Start = Start
+        self.End = End
+        self.Duration = Duration
+        self.Style = Style
+        self.Name = Name
+        self.MarginL = MarginL
+        self.MarginR = MarginR
+        self.MarginV = MarginV
+        self.Effect = Effect
+        self.Text = Text
     
     def from_dialogue(self, input: str):
-        self.start = to_time(get_clip(input)["_startTime"])
-        self.duration = get_clip(input)["_duration"]
-        self.end = end_time(get_clip(input)["_startTime"], get_clip(input)["_duration"])
+        self.Start = to_time(get_clip(input)["_startTime"])
+        self.Duration = get_clip(input)["_duration"]
+        self.End = end_time(get_clip(input)["_startTime"], get_clip(input)["_duration"])
         if get_text(input)[1]:
-            self.style = "对帧字幕灰色"
+            self.Style = "对帧字幕灰色"
         else:
-            self.style = "对帧字幕"
+            self.Style = "对帧字幕"
         if KEY_NARRATION in input:
-            self.name = ""
-            self.narration = True
+            self.Name = ""
         else: 
             if get_name(input) == "{user}":
-                self.name = "マネージャー"
+                self.Name = "マネージャー"
             else:
-                self.name = get_name(input)
-        self.text = get_text(input)[0]
+                self.Name = get_name(input)
+        self.Text = get_text(input)[0]
 
     def echo_dialogue(self) -> str:
-        dialogue = 'Dialogue: %d,%s,%s,%s,%s,%d,%d,%d,%s,%s' %(self.layer, self.start, self.end, self.style, self.name, self.marginL, self.marginR, self.marginV, self.effect, "")
+        dialogue = 'Dialogue: %d,%s,%s,%s,%s,%d,%d,%d,%s,%s' %(self.Layer, self.Start, self.End, self.Style, self.Name, self.MarginL, self.MarginR, self.MarginV, self.Effect, "")
         return dialogue
     
     def echo_comment(self) -> str:
-        comment = 'Comment: %d,%s,%s,%s,%s,%d,%d,%d,%s,%s' %(self.layer, self.start, self.end, self.style, self.name, self.marginL, self.marginR, self.marginV, self.effect, self.text.replace("{user}", "マネージャー"))
+        comment = 'Comment: %d,%s,%s,%s,%s,%d,%d,%d,%s,%s' %(self.Layer, self.Start, self.End, self.Style, self.Name, self.MarginL, self.MarginR, self.MarginV, self.Effect, self.Text.replace("{user}", "マネージャー"))
         return comment
     
     @classmethod
     def echo_format(self) -> str:
         _format = "Format:"
         for attribute in self.__init__.__code__.co_varnames[1:]:
+            if attribute == "Duration":
+                continue
             _format = _format + f" {attribute},"
-        _format = _format[:-2]
+        _format = _format[:-1]
         return _format
 
 

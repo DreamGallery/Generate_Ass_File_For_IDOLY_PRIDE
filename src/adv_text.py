@@ -48,7 +48,10 @@ def get_text(input: str) -> tuple[str, bool]:
 
 
 def get_name(input: str) -> str:
-    name = input[1:-2].split(f"\u0020{KEY_NAME}")[1].split(f"\u0020{KEY_THUMBNIAL}")[0]
+    if KEY_THUMBNIAL in input:
+        name = input[1:-2].split(f"\u0020{KEY_NAME}")[1].split(f"\u0020{KEY_THUMBNIAL}")[0]
+    else:
+        name = input[1:-2].split(f"\u0020{KEY_NAME}")[1].split(f"\u0020{KEY_CLIP}")[0]
     return name
 
 
@@ -62,7 +65,7 @@ def to_time(clip_time: float) -> str:
     H = clip_time // 3600
     M = (clip_time - H * 3600)//60
     S = clip_time - H * 3600 - M * 60
-    _time = '%02d:%02d:%05.2f' %(H,M,S)
+    _time = '%d:%02d:%05.2f' %(H,M,S)
     return _time
 
 

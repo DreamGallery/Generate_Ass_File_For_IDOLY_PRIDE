@@ -33,7 +33,7 @@ class ass_styles(object):
         _format = "Format:"
         for attribute in self.__init__.__code__.co_varnames[1:]:
             _format = _format + f" {attribute},"
-        _format = _format[:-2]
+        _format = _format[:-1]
         return _format
 
 style_1 = ass_styles("其他人员", "思源黑体 CN Bold", 85, "&H00FFFFFF", "&H000000FF", "&H00000000", "&H00000000", 0, 0, 0, 0, 100, 100, 0, 0, 1, 2, 2, 2, 10, 10, 10, 1)
