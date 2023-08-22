@@ -25,15 +25,21 @@ else:
 
 list = extract(game_file_name)
 count = 0
+files = []
 start_file_index = 0
 content = script_info + "\n" + garbage + "\n" + style + "\n" + event
 print("ASS-Generate-Progress start")
+
+target = video_file_name.split(".")[0]
+for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
+    files.sort(key=lambda x:float(x.replace("_", ".").split('.png')[0]))
+
 for dial in list:
     if "SkipTime" in dial:
         start_file_index = start_file_index + int((float(str(dial).split(":")[1][:-1]) - 1) / (1 / stream.fps))
     _event = ass_events()
     _event.from_dialogue(dial)
-    next_file_index = time_fix(_event, start_file_index, video_file_name.split(".")[0], stream)
+    next_file_index = time_fix(_event, files, start_file_index, target, stream)
     start_file_index = next_file_index
     if need_comment:
         content = content + f"{_event.echo_dialogue()}" + "\n" + f"{_event.echo_comment()}" + "\n"

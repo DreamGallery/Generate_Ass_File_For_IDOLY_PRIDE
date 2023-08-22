@@ -1,4 +1,4 @@
-import os
+import os, sys
 import configparser
 from src.match import *
 from src.frame import *
@@ -17,38 +17,35 @@ kerning = config.getint("Font Config", "kerning")
 threshold = config.getfloat("Arg", "threshold")
 
 
-def time_fix(event: ass_events, start_file_index: int, target: str, stream: frame_time) ->int:
+def time_fix(event: ass_events, files:list[str], start_file_index: int, target: str, stream: frame_time) ->int:
     text = event.Text
     binary, mask = draw_text(text, FONT_PATH, fontsize, strokewidth, kerning)
-    for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
-        files.sort(key=lambda x:float(x.replace("_", ".").split('.png')[0]))
+    for file in files[start_file_index:]:
+        if compare(f"{CACHE_PATH}/{target}/{file}", binary, threshold, mask = mask):
+            start_time = float(file.split(".")[0].replace("_", ".")[:-1])
+            event.Start = to_time(start_time)
+            break
+        else:
+            start_file_index = start_file_index + 1
+
+    if start_file_index > len(files):
+        print("can't find subtitle text in target files, please check or adjust parameter")
+        sys.exit(1)
+    
+    index_plus = int (event.Duration / (1 / stream.fps) - 2)
+    start_file_index = start_file_index + index_plus
+
+    try:
         for file in files[start_file_index:]:
             if compare(f"{CACHE_PATH}/{target}/{file}", binary, threshold, mask = mask):
-                start_time = float(file.split(".")[0].replace("_", ".")[:-1])
-                event.Start = to_time(start_time)
-                break
-            else:
                 start_file_index = start_file_index + 1
-
-        if start_file_index > len(files):
-            print("can't find subtitle text in target files, please check or adjust parameter")
-            return
-        
-        index_plus = int (event.Duration / (1 / stream.fps) - 1)
-        start_file_index = start_file_index + index_plus
-
-        try:
-            for file in files[start_file_index:]:
-                if compare(f"{CACHE_PATH}/{target}/{file}", binary, threshold, mask = mask):
-                    start_file_index = start_file_index + 1
-                else:
-                    end_time = float(file.split(".")[0].replace("_", ".")[:-1])
-                    event.End = to_time(end_time)
-                    break
-        except(IndexError):
-            print(IndexError,"\nfile start index plus index convert by time duration exceeds the number of all files")
-            return
-        
-        end_file_index = start_file_index
-        break
+            else:
+                end_time = float(file.split(".")[0].replace("_", ".")[:-1])
+                event.End = to_time(end_time)
+                break
+    except(IndexError):
+        print(IndexError,"\nfile start index plus index convert by time duration exceeds the number of all files")
+        sys.exit(1)
+    
+    end_file_index = start_file_index
     return end_file_index

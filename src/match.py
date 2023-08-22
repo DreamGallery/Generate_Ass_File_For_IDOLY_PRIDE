@@ -30,7 +30,7 @@ def compare(img_path: str, binary: any, threshold: float, mask: any) ->bool:
     white_pixels = cv2.countNonZero(img)
     if white_pixels < 100:
         return False
-    res = cv2.matchTemplate(img, binary, cv2.TM_CCOEFF_NORMED, mask = mask)
+    res = cv2.matchTemplate(img, binary, cv2.TM_CCORR_NORMED, mask = mask)
     res[np.isinf(res)] = 0
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
     if max_val > threshold:
