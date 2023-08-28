@@ -1,15 +1,13 @@
 import cv2
 import os
 import sys
-import configparser
 import threading
 import numpy as np
 from src.match import to_binary
+from src.read_ini import config
 from concurrent.futures import ThreadPoolExecutor
 
-BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
-config = configparser.ConfigParser()
-config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
+
 CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 VIDEO_PATH = config.get("File PATH", "VIDEO_PATH")
 
@@ -25,15 +23,12 @@ class frame_time(object):
         name = seconds[:-1].replace(".", "_")
         height = len(frame)
         width = len(frame[0])
-        img = frame[(height * 19 // 27):height, 0:width]
-        _image_path = f"{_image_folder_path}/{name}.png" 
-        binary = to_binary(img)
-        kernel = np.ones((3, 3), np.uint8)
-        binary_erosion = cv2.erode(binary, kernel, iterations=1)
-        binary_erosion_edge = cv2.Canny(binary_erosion, 150, 200)
-        binary_erosion_edge_dilate = cv2.dilate(binary_erosion_edge, kernel, iterations=3)
-        binary_with_mask = cv2.bitwise_and(binary, binary, mask = binary_erosion_edge_dilate)
-        cv2.imwrite(_image_path, binary_with_mask)
+        img = frame[(height * 29 // 36):(height * 8 // 9), (width * 1 // 16):(width * 15 // 16)]
+        _image_path = f"{_image_folder_path}/{name}.png"
+        binary = to_binary(img, 127)
+        kernel = np.ones((3,3), np.uint8)
+        binary_opn = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+        cv2.imwrite(_image_path, binary_opn)
         lock.acquire()
         _current_count += 1
         percent = round(_current_count / total_fps * 100)

@@ -1,9 +1,6 @@
-import os
-import configparser
+from src.read_ini import config
 
-BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
-config = configparser.ConfigParser()
-config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
+
 TXT_PATH = config.get("File PATH", "TXT_PATH")
 main_file_name = config.get("Merge", "main_file_name")
 sub_file_name = config.get("Merge", "sub_file_name")

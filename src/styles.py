@@ -29,9 +29,9 @@ class ass_styles(object):
         return style
 
     @classmethod
-    def echo_format(self) -> str:
+    def echo_format(cls) -> str:
         _format = "Format:"
-        for attribute in self.__init__.__code__.co_varnames[1:]:
+        for attribute in cls.__init__.__code__.co_varnames[1:]:
             _format = _format + f" {attribute},"
         _format = _format[:-1]
         return _format

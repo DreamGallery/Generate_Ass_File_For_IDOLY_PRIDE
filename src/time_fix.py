@@ -1,14 +1,11 @@
-import os, sys
-import configparser
+import sys
 from src.match import *
 from src.frame import *
 from src.events import ass_events
 from src.adv_text import to_time
+from src.read_ini import config
 
 
-BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
-config = configparser.ConfigParser()
-config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
 FONT_PATH = config.get("File PATH", "FONT_PATH")
 CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 fontsize = config.getint("Font Config", "fontsize")

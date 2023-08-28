@@ -1,15 +1,11 @@
-import os
-import configparser
 from src.adv_text import *
+from src.read_ini import config
 from src.events import ass_events
 from src.ass_part import script_info, garbage, style, event
 from src.time_fix import *
 from src.frame import *
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-config = configparser.ConfigParser()
-config.read(os.path.join(BASE_DIR ,'config.ini'), encoding="utf-8")
 ASS_PATH = config.get("File PATH", "ASS_PATH")
 TXT_PATH = config.get("File PATH", "TXT_PATH")
 game_file_name = config.get("Info", "game_file_name")

@@ -2,9 +2,9 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-def to_binary(img: any) ->any:
+def to_binary(img: any, thresh: float) ->any:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret,binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+    ret,binary = cv2.threshold(gray, thresh, 255, cv2.THRESH_BINARY)
     return binary
 
 def draw_text(text: str, font_path: str, fontsize: int, strokewidth: int, kerning: int) ->[any, any]:
@@ -19,9 +19,8 @@ def draw_text(text: str, font_path: str, fontsize: int, strokewidth: int, kernin
     for char in text:
         draw.text((((char_width)//2 + tmp_width), (text_size[1] // 2)), char, anchor="mm", font=font, stroke_width=strokewidth, stroke_fill=(32,32,32))
         tmp_width = tmp_width + char_width + kerning 
-    binary = to_binary(np.asarray(text_img))
-    img_gray = cv2.cvtColor(np.asarray(text_img), cv2.COLOR_BGR2GRAY)
-    ret, mask = cv2.threshold(img_gray, 30, 255, cv2.THRESH_BINARY)
+    binary = to_binary(np.asarray(text_img), 127)
+    mask = to_binary(np.asarray(text_img), 30)
     return binary, mask
 
 

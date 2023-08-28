@@ -1,10 +1,7 @@
-import os
 import json
-import configparser
+from src.read_ini import config
 
-BASE_PATH = os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
-config = configparser.ConfigParser()
-config.read(os.path.join(BASE_PATH ,'config.ini'), encoding="utf-8")
+
 TXT_PATH = config.get("File PATH", "TXT_PATH")
 player_name = config.get("Info", "player_name")
 KEY_MASSAGE = config.get("Text KEY", "KEY_MASSAGE")

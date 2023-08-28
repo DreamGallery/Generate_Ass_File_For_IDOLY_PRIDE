@@ -42,9 +42,9 @@ class ass_events(object):
         return comment
     
     @classmethod
-    def echo_format(self) -> str:
+    def echo_format(cls) -> str:
         _format = "Format:"
-        for attribute in self.__init__.__code__.co_varnames[1:]:
+        for attribute in cls.__init__.__code__.co_varnames[1:]:
             if attribute == "Duration":
                 continue
             _format = _format + f" {attribute},"
