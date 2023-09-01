@@ -27,7 +27,7 @@ edit `[Info]` in `config.ini` first, put game subtitle file in `ass/txt`, and th
 python generate.py
 ```
 
-to use the time-fix options you should put your video file in `ass/video`, and the recommended resolution is [1920x1080] <br />or you can change the `[Font Config]` youself in `config.ini` to fit your video.
+to use the time-fix options you should put your video file in `ass/video`, and the recommended resolution is `[1920x1080]` or you can change the `[Font Config]` youself in `config.ini` to fit your video.
 
 ## Generate .ass file with time-fix
 ```
@@ -40,3 +40,12 @@ If you need to merge two subtitle files, just fill the `Merge` section in `confi
 ```
 python tools/merge.py
 ```
+
+## ※About Fonts
+IDOLY PRIDE use SDF to render subtitle in story, the original fonts of `japanese(UDKakugo)`, `letters(DM Sans)` and `digit(Roboto)` are all different, the fonts in `font` folder are only possible fonts. 
+<br />If you need another weight of these two fonts, you can get them through the link below
+```
+https://github.com/googlefonts/roboto #Roboto
+https://github.com/googlefonts/dm-fonts #DeepMindSans(v1.002)
+```
+In addition, please note that some fonts require authorization for commercial use.

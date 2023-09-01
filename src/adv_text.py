@@ -30,7 +30,7 @@ def get_title(input: str) -> str:
     return title
 
 
-def get_text(input: str) -> tuple[str, bool]:
+def get_text(input: str) -> [str, bool]:
     if KEY_MASSAGE in input:
         text = input[1:-2].split(KEY_MASSAGE)[1].split(f"\u0020{KEY_NAME}")[0].replace("{user}", player_name)
         if "\uff08" in text or "\uff09" in text:

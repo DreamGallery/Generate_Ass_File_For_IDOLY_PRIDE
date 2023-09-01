@@ -1,4 +1,5 @@
 import sys
+import json
 from src.match import *
 from src.frame import *
 from src.events import ass_events
@@ -6,9 +7,9 @@ from src.adv_text import to_time
 from src.read_ini import config
 
 
-FONT_PATH = config.get("File PATH", "FONT_PATH")
+FONT_PATH = json.loads(config.get("File PATH", "FONT_PATH"))
 CACHE_PATH = config.get("File PATH", "CACHE_PATH")
-fontsize = config.getint("Font Config", "fontsize")
+fontsize = json.loads(config.get("Font Config", "fontsize"))
 strokewidth = config.getint("Font Config", "strokewidth")
 kerning = config.getint("Font Config", "kerning")
 threshold = config.getfloat("Arg", "threshold")
