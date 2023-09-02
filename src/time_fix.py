@@ -30,7 +30,7 @@ def time_fix(event: ass_events, files:list[str], start_file_index: int, target: 
         print("can't find subtitle text in target files, please check or adjust parameter")
         sys.exit(1)
     
-    index_plus = int (event.Duration / (1 / stream.fps) - 2)
+    index_plus = int (event.Duration * stream.fps - 2)
     start_file_index = start_file_index + index_plus
 
     try:

@@ -3,7 +3,7 @@ import os
 import sys
 import threading
 import numpy as np
-from src.match import to_binary
+from src.match import to_binary_adaptive
 from src.read_ini import config
 from concurrent.futures import ThreadPoolExecutor
 
@@ -25,7 +25,7 @@ class frame_time(object):
         width = len(frame[0])
         img = frame[(height * 29 // 36):(height * 8 // 9), (width * 1 // 16):(width * 15 // 16)]
         _image_path = f"{_image_folder_path}/{name}.png"
-        binary = to_binary(img, 127)
+        binary = to_binary_adaptive(img, 11, 0)
         kernel = np.ones((3,3), np.uint8)
         binary_opn = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
         cv2.imwrite(_image_path, binary_opn)

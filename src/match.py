@@ -10,6 +10,11 @@ def to_binary(img: any, thresh: float) ->any:
     ret,binary = cv2.threshold(gray, thresh, 255, cv2.THRESH_BINARY)
     return binary
 
+def to_binary_adaptive(img: any, blocksize: int, C: float) ->any:
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, blocksize, C)
+    return binary
+
 def draw_text(text: str, font_path: list[str], fontsize: list[int], strokewidth: int, kerning: int) ->[list[any], list[any]]:
     font_japan = ImageFont.truetype(font_path[0], fontsize[0])
     font_alpha = ImageFont.truetype(font_path[1], fontsize[1])
@@ -62,14 +67,12 @@ def compare(img_path: str, binary: list[any], threshold: float, mask: list[any])
     if white_pixels < 100:
         return False
     part_max = []
-    for index in range(len(binary)):
-        res = cv2.matchTemplate(img, binary[index], cv2.TM_CCORR_NORMED, mask = mask[index])
+    for image in zip(binary, mask):
+        res = cv2.matchTemplate(img, image[0], cv2.TM_CCORR_NORMED, mask = image[1])
         res[np.isinf(res)] = 0
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
         part_max.append(max_val)
     max_avg = sum(part_max) / len(part_max)
-    if max_avg > 0.6:
-        print(img_path, max_val)
     if max_avg > threshold:
         return True
     else:
