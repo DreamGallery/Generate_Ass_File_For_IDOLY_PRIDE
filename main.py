@@ -18,6 +18,7 @@ if match_only:
     stream.get_fps(video_file_name)
 else:
     stream.to_frame(video_file_name)
+    print("\n")
 
 list = extract(game_file_name)
 count = 0
@@ -32,7 +33,7 @@ for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
 
 for dial in list:
     if "SkipTime" in dial:
-        start_file_index = start_file_index + int((float(str(dial).split(":")[1][:-1]) - 1) / (1 / stream.fps))
+        start_file_index = start_file_index + int((float(str(dial).split(":")[1][:-1]) - 1) * stream.fps)
     _event = ass_events()
     _event.from_dialogue(dial)
     next_file_index = time_fix(_event, files, start_file_index, target, stream)
@@ -51,5 +52,5 @@ try:
     with open(f"{ASS_PATH}/{title}.ass", "w", encoding = "utf8") as fp:
         fp.write(content)
     print(f"\n{game_file_name} has been successfully converted to {title}.ass")
-except:
-    print(f"\n{title} convert failed")
+except Exception as e:
+    print(f"\n{title} convert failed. Info: {e}")

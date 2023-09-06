@@ -19,8 +19,8 @@ def generate_ass(input: str):
         with open(f"{ASS_PATH}/{get_title(input)}.ass", "w", encoding="utf8") as fp:
             fp.write(content)
         print(f"{input} has been successfully converted to {get_title(input)}.ass")
-    except:
-        print(f"{input} convert failed")
+    except Exception as e:
+        print(f"{input} convert failed. Info: {e}")
         return
     
 if __name__ == "__main__":
