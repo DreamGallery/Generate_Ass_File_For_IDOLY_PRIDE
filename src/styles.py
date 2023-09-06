@@ -1,3 +1,7 @@
+import json
+from src.read_ini import config
+
+
 class ass_styles(object):
     def __init__(self, Name: str = "", Fontname: str = "", Fontsize: int = "", PrimaryColour: str = "", SecondaryColour: str = "", OutlineColour: str = "", BackColour: str = "", Bold: int = "", Italic: int = "", Underline: int = "", StrikeOut: int = "", ScaleX: int = "", ScaleY: int = "", Spacing: int = "", Angle: int = "", BorderStyle: int = "", Outline: int = "", Shadow: int = "", Alignment: int = "", MarginL: int = "", MarginR: int = "", MarginV: int = "", Encoding: int = ""):
         self.Name = Name
@@ -36,7 +40,5 @@ class ass_styles(object):
         _format = _format[:-1]
         return _format
 
-style_1 = ass_styles("其他人员", "思源黑体 CN Bold", 85, "&H00FFFFFF", "&H000000FF", "&H00000000", "&H00000000", 0, 0, 0, 0, 100, 100, 0, 0, 1, 2, 2, 2, 10, 10, 10, 1)
-style_2 = ass_styles("对帧字幕", "方正正中黑_GBK", 63, "&H00FEFEFE", "&H000000FF", "&H00000000", "&H00000000", -1, 0, 0, 0, 100, 100, 5, 0, 1, 6, 0, 2, 10, 10, 200, 1)
-style_3 = ass_styles("对帧字幕灰色", "方正正中黑_GBK", 63, "&H00B4B4B4", "&H000000FF", "&H00000000", "&H00000000", -1, 0, 0, 0, 100, 100, 5, 0, 1, 6, 0, 2, 10, 10, 200, 1)
-
+style_1 = ass_styles(*json.loads(config.get("ASS Style", "style_1")))
+style_2 = ass_styles(*json.loads(config.get("ASS Style", "style_2")))

@@ -21,9 +21,9 @@ class ass_events(object):
         self.Duration = get_clip(input)["_duration"]
         self.End = end_time(get_clip(input)["_startTime"], get_clip(input)["_duration"])
         if get_text(input)[1]:
-            self.Style = "对帧字幕灰色"
+            self.Style = "IdolyPride Gray"
         else:
-            self.Style = "对帧字幕"
+            self.Style = "IdolyPride Normal"
         if KEY_NARRATION in input:
             self.Name = ""
         else: 

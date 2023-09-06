@@ -32,7 +32,6 @@ style = f"\
 {ass_styles.echo_format()}\n\
 {style_1.echo()}\n\
 {style_2.echo()}\n\
-{style_3.echo()}\n\
 "
 
 event = f"\

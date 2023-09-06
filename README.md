@@ -7,6 +7,7 @@ Also Using `OPENCV` to fix timeline of subtitle frame by frame.
 
 
 # Usage
+You can read `config.ini` to get more info about some args<br />
 
 ## Install from the repository
 ```
