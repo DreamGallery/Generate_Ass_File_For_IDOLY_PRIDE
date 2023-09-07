@@ -1,5 +1,5 @@
 from src.styles import *
-from src.events import ass_events
+from src.events import AssEvents
 
 
 script_info = "\
@@ -29,13 +29,12 @@ Video Position: \n\
 
 style = f"\
 [V4+ Styles]\n\
-{ass_styles.echo_format()}\n\
+{AssStyles.echo_format()}\n\
 {style_1.echo()}\n\
 {style_2.echo()}\n\
 "
 
 event = f"\
 [Events]\n\
-{ass_events.echo_format()}\n\
+{AssEvents.echo_format()}\n\
 "
-

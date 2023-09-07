@@ -7,13 +7,13 @@ sub_file_name = config.get("Merge", "sub_file_name")
 merge_file_name = config.get("Merge", "merge_file_name")
 mv_length = config.getfloat("Merge", "mv_length")
 
-with open(f"{TXT_PATH}/{merge_file_name}", 'x', encoding="utf8") as f:
-    with open(f"{TXT_PATH}/{main_file_name}", 'r', encoding="utf8") as wf:
+with open(f"{TXT_PATH}/{merge_file_name}", "x", encoding="utf8") as f:
+    with open(f"{TXT_PATH}/{main_file_name}", "r", encoding="utf8") as wf:
         for line in wf:
             if "title" in line or "text" in line:
                 f.write(line)
     f.write(f"[mark text=SkipTime:{mv_length}]\n")
-    with open(f"{TXT_PATH}/{sub_file_name}", 'r', encoding="utf8") as sf:
+    with open(f"{TXT_PATH}/{sub_file_name}", "r", encoding="utf8") as sf:
         for line in sf:
             if "text" in line:
                 f.write(line)
