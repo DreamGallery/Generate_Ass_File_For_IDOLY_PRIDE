@@ -34,23 +34,23 @@ python generate.py
 
 ## Generate .ass file with time-fix
 
-To use time-fix option you need to put the recorded video in `adv/video`, and the recommended resolution is `[1920x1080]` or you can change the `[Font Config]` in `config.ini` to fit your video(compare in PS is a good idea).
+To use time-fix option you need to put the recorded video in `adv/video`, and the recommended resolution is `[1920x1080]` or you can change the `[Font Config]` in `config.ini` to fit your video(compare in PS is a good idea).<br />
+If your resolution ratio is not `16:9`, you may also have to modify the cutting area of frames near line `26~29` in `src/frame.py`.
 
 ```
 python main.py
 ```
 
-Adjust the appropriate threshold is very helpful to the runtime of this tool.<br />
+Adjust the appropriate threshold is very helpful to the running of this tool.<br />
 Maybe sometimes you need to increase the threshold instead of decreasing it.<br />
-If you want to change the threshold value after finishing the Pre-Progress for frames, you can change the value of `match_only` to `True` under section `Arg`.
+If you want to change the threshold value after finishing the Pre-Progress for frames, you can set `match_only = True` under section `[Arg]`.
 
-## Merge game subtitle
+## In the case of two subtitle files
 
-If you need to merge two subtitle files, just fill the `Merge` section in `config.ini`, and run with
+Because some event stories will include MV of new song, the subtitle will be divided into two files.<br />
+If you set `MV_exists = True` under section `[Sub]`, you will need to input the length of MV during running, more information will be printed before input.<br />
 
-```
-python tools/merge.py
-```
+※Generating .ass file without time-fix doesn't work in this situation, or you will lose the information of subtitles part 2.
 
 ## ※About Fonts
 
