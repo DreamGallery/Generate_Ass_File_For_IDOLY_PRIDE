@@ -1,4 +1,4 @@
-import cv2
+import cv2, cv2.typing
 import os, sys
 import threading
 import numpy as np
@@ -11,18 +11,25 @@ _CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 _VIDEO_PATH = config.get("File PATH", "VIDEO_PATH")
 
 _lock = threading.Lock()
-_current_count = 0
+_current_count = int(0)
 
 
 class FrameProcess(object):
     fps: float
 
-    def one_task(self, image_folder_path: str, frame: any, milliseconds: float, total_fps: int):
+    def one_task(
+        self,
+        image_folder_path: str,
+        frame: cv2.typing.MatLike,
+        width: int,
+        height: int,
+        milliseconds: float,
+        total_fps: int,
+    ) -> None:
         global _current_count
         seconds = "%.4f" % (milliseconds // 1000 + (milliseconds % 1000) / 1000)
         name = seconds[:-1].replace(".", "_")
-        height = len(frame)
-        width = len(frame[0])
+        # Modify the following content if your resolution ratio is not 16:9
         img = frame[
             (height * 29 // 36) : (height * 8 // 9),
             (width * 1 // 16) : (width * 15 // 16),
@@ -43,12 +50,14 @@ class FrameProcess(object):
         sys.stdout.flush()
         _lock.release()
 
-    def to_frame(self, input: str):
+    def to_frame(self, input: str) -> None:
         image_folder_path = f"{_CACHE_PATH}/{input.split('.')[0]}"
         os.makedirs(image_folder_path, exist_ok=True)
         video_path = f"{_VIDEO_PATH}/{input}"
         vc = cv2.VideoCapture(video_path)
         self.fps = vc.get(cv2.CAP_PROP_FPS)
+        width = int(vc.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(vc.get(cv2.CAP_PROP_FRAME_HEIGHT))
         total_fps = int(vc.get(cv2.CAP_PROP_FRAME_COUNT))
         executor = ThreadPoolExecutor(max_workers=20)
         frame_tasks = []
@@ -58,13 +67,15 @@ class FrameProcess(object):
                 break
             milliseconds = vc.get(cv2.CAP_PROP_POS_MSEC)
             frame_tasks.append(
-                executor.submit(self.one_task, image_folder_path, frame, milliseconds, total_fps)
+                executor.submit(
+                    self.one_task, image_folder_path, frame, width, height, milliseconds, total_fps
+                )
             )
         vc.release()
         wait(frame_tasks, return_when="ALL_COMPLETED")
         print("\u0020", "Pre-Progress finished")
 
-    def get_fps(self, input: str):
+    def get_fps(self, input: str) -> None:
         video_path = f"{_VIDEO_PATH}/{input}"
         vc = cv2.VideoCapture(video_path)
         self.fps = vc.get(cv2.CAP_PROP_FPS)
