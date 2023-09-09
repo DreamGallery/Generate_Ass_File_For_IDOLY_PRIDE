@@ -37,9 +37,9 @@ if MV_exists:
     for dial in extract(sub_file_name):
         dial_list.append(dial)
 
-files = []
-current_count = 0
-start_file_index = 0
+files: list[str] = []
+current_count = int(0)
+start_file_index = int(0)
 content = script_info + "\n" + garbage + "\n" + style + "\n" + event
 print("ASS-Generate-Progress start")
 
@@ -49,7 +49,7 @@ for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
 
 for dial in dial_list:
     if "SkipTime" in dial:
-        start_file_index = start_file_index + int(float(str(dial).split(":")[1]) * stream.fps)
+        start_file_index = start_file_index + int(float(dial.split(":")[1]) * stream.fps)
         continue
     dial_event = AssEvents()
     dial_event.from_dialogue(dial)

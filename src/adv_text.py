@@ -12,8 +12,8 @@ _KEY_THUMBNIAL = config.get("Text KEY", "KEY_THUMBNIAL")
 _KEY_TITLE = config.get("Text KEY", "KEY_TITLE")
 
 
-def extract(input: str) -> list:
-    dial_list = []
+def extract(input: str) -> list[str]:
+    dial_list: list[str] = []
     with open(f"{_TXT_PATH}/{input}", "r", encoding="utf8") as f:
         for line in f:
             if "text" in line:
@@ -30,7 +30,7 @@ def get_title(input: str) -> str:
     return title
 
 
-def get_text(input: str) -> [str, bool]:
+def get_text(input: str) -> tuple[str, bool]:
     if _KEY_MASSAGE in input:
         text = (
             input[1:-2].split(_KEY_MASSAGE)[1].split(f"\u0020{_KEY_NAME}")[0].replace("{user}", _player_name)
@@ -43,7 +43,7 @@ def get_text(input: str) -> [str, bool]:
     elif _KEY_NARRATION in input:
         text = input[1:-2].split(_KEY_NARRATION)[1].split(f"\u0020{_KEY_CLIP}")[0]
         gray = True
-    return text, gray
+    return (text, gray)
 
 
 def get_name(input: str) -> str:
@@ -54,7 +54,7 @@ def get_name(input: str) -> str:
     return name
 
 
-def get_clip(input: str) -> any:
+def get_clip(input: str):
     clip = input[1:-2].split(f"\u0020{_KEY_CLIP}")[1].replace("\\", "")
     data = json.loads(clip)
     return data
