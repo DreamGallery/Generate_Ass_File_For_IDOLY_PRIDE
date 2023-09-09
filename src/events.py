@@ -31,7 +31,7 @@ class AssEvents(object):
         self.Effect = Effect
         self.Text = Text
 
-    def from_dialogue(self, input: str):
+    def from_dialogue(self, input: str) -> None:
         self.Start = to_time(get_clip(input)["_startTime"])
         self.Duration = get_clip(input)["_duration"]
         self.End = end_time(get_clip(input)["_startTime"], get_clip(input)["_duration"])

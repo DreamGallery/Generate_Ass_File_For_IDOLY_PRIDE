@@ -1,5 +1,6 @@
 import sys
 import json
+import cv2
 from src.read_ini import config
 from src.frame import FrameProcess
 from src.events import AssEvents
@@ -8,7 +9,6 @@ from src.match import draw_text, compare
 
 
 _FONT_PATH = json.loads(config.get("File PATH", "FONT_PATH"))
-_CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 _fontsize = json.loads(config.get("Font Config", "fontsize"))
 _strokewidth = config.getint("Font Config", "strokewidth")
 _kerning = config.getint("Font Config", "kerning")
@@ -17,22 +17,22 @@ _threshold = config.getfloat("Arg", "threshold")
 
 def time_fix(
     event: AssEvents,
-    files: list[str],
+    image_list: list[tuple[str, cv2.UMat]],
     start_file_index: int,
     target: str,
     stream: FrameProcess,
 ) -> int:
     text = event.Text
     binary, mask = draw_text(text, _FONT_PATH, _fontsize, _strokewidth, _kerning)
-    for file in files[start_file_index:]:
-        if compare(f"{_CACHE_PATH}/{target}/{file}", binary, _threshold, mask=mask):
-            start_time = float(file.split(".")[0].replace("_", ".")[:-1])
+    for frame_pack in image_list[start_file_index:]:
+        if compare(frame_pack[1], binary, _threshold, mask=mask):
+            start_time = float(frame_pack[0][:-1])
             event.Start = to_time(start_time)
             break
         else:
             start_file_index = start_file_index + 1
 
-    if start_file_index >= len(files):
+    if start_file_index >= len(image_list):
         print("can't find subtitle text in target files, please check or adjust parameter")
         sys.exit(1)
 
@@ -40,11 +40,11 @@ def time_fix(
     start_file_index = start_file_index + index_plus
 
     try:
-        for file in files[start_file_index:]:
-            if compare(f"{_CACHE_PATH}/{target}/{file}", binary, _threshold, mask=mask):
+        for frame_pack in image_list[start_file_index:]:
+            if compare(frame_pack[1], binary, _threshold, mask=mask):
                 start_file_index = start_file_index + 1
             else:
-                end_time = float(file.split(".")[0].replace("_", ".")[:-1])
+                end_time = float(frame_pack[0][:-1])
                 event.End = to_time(end_time)
                 break
     except IndexError:
