@@ -5,7 +5,7 @@ Also using `OPENCV` to fix timeline of subtitle frame by frame.<br />
 
 ※This tool is based on [MalitsPlus/HoshimiToolkit](https://github.com/MalitsPlus/HoshimiToolkit), you need to get subtitle files in the game through this project first, the names of required files are usually `adv_***.txt`.
 
-# Usage
+# Usage(CPU_noCache Version)
 
 ## Install from the repository
 
@@ -35,7 +35,7 @@ python generate.py
 ## Generate .ass file with time-fix
 
 To use time-fix option you need to put the recorded video in `adv/video`, and the recommended resolution is `[1920x1080]` or you can change the `[Font Config]` in `config.ini` to fit your video(compare in PS is a good idea).<br />
-If your resolution ratio is not `16:9`, you may also have to modify the cutting area of frames near line `26~29` in `src/frame.py`.
+If your resolution ratio is not `16:9`, you may also have to modify the cutting area of frames in `src/frame.py`.
 
 ```
 python main.py
@@ -43,7 +43,6 @@ python main.py
 
 Adjust the appropriate threshold is very helpful to the running of this tool.<br />
 Maybe sometimes you need to increase the threshold instead of decreasing it.<br />
-If you want to change the threshold value after finishing the Pre-Progress for frames, you can set `match_only = True` under section `[Arg]`.
 
 ## In the case of two subtitle files
 

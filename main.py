@@ -1,4 +1,3 @@
-import os
 from src.adv_text import *
 from src.read_ini import config
 from src.time_fix import time_fix
@@ -9,18 +8,13 @@ from src.ass_part import script_info, garbage, style, event
 
 ASS_PATH = config.get("File PATH", "ASS_PATH")
 TXT_PATH = config.get("File PATH", "TXT_PATH")
-CACHE_PATH = config.get("File PATH", "CACHE_PATH")
 game_file_name = config.get("Info", "game_file_name")
 video_file_name = config.get("Info", "video_file_name")
-match_only = config.getboolean("Arg", "match_only")
 need_comment = config.getboolean("Arg", "need_comment")
 MV_exists = config.getboolean("Sub", "MV_exists")
 
 stream = FrameProcess()
-if match_only:
-    stream.get_fps(video_file_name)
-else:
-    stream.to_frame(video_file_name)
+image_list = stream.to_frame(video_file_name)
 
 dial_list = extract(game_file_name)
 if MV_exists:
@@ -37,23 +31,21 @@ if MV_exists:
     for dial in extract(sub_file_name):
         dial_list.append(dial)
 
-files = []
-current_count = 0
-start_file_index = 0
+current_count = int(0)
+start_file_index = int(0)
 content = script_info + "\n" + garbage + "\n" + style + "\n" + event
 print("ASS-Generate-Progress start")
 
 target = video_file_name.split(".")[0]
-for root, dirs, files in os.walk(f"{CACHE_PATH}/{target}"):
-    files.sort(key=lambda x: float(x.replace("_", ".").split(".png")[0]))
+image_list.sort(key=lambda x: float(x[0]))
 
 for dial in dial_list:
     if "SkipTime" in dial:
-        start_file_index = start_file_index + int(float(str(dial).split(":")[1]) * stream.fps)
+        start_file_index = start_file_index + int(float(dial.split(":")[1]) * stream.fps)
         continue
     dial_event = AssEvents()
     dial_event.from_dialogue(dial)
-    next_file_index = time_fix(dial_event, files, start_file_index, target, stream)
+    next_file_index = time_fix(dial_event, image_list, start_file_index, target, stream)
     start_file_index = next_file_index
     if need_comment:
         content = content + f"{dial_event.echo_dialogue()}" + "\n" + f"{dial_event.echo_comment()}" + "\n"
