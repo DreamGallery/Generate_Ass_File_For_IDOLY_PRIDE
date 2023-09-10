@@ -12,17 +12,17 @@ _KEY_THUMBNIAL = config.get("Text KEY", "KEY_THUMBNIAL")
 _KEY_TITLE = config.get("Text KEY", "KEY_TITLE")
 
 
-def extract(input: str) -> list[str]:
+def extract(filename: str) -> list[str]:
     dial_list: list[str] = []
-    with open(f"{_TXT_PATH}/{input}", "r", encoding="utf8") as f:
+    with open(f"{_TXT_PATH}/{filename}", "r", encoding="utf8") as f:
         for line in f:
             if "text" in line:
                 dial_list.append(line)
     return dial_list
 
 
-def get_title(input: str) -> str:
-    with open(f"{_TXT_PATH}/{input}", "r", encoding="utf8") as f:
+def get_title(filename: str) -> str:
+    with open(f"{_TXT_PATH}/{filename}", "r", encoding="utf8") as f:
         for line in f:
             if "title" in line:
                 title = line[1:-2].split(_KEY_TITLE)[1].replace(" ", "_")
@@ -30,32 +30,35 @@ def get_title(input: str) -> str:
     return title
 
 
-def get_text(input: str) -> tuple[str, bool]:
-    if _KEY_MASSAGE in input:
+def get_text(content: str) -> tuple[str, bool]:
+    if _KEY_MASSAGE in content:
         text = (
-            input[1:-2].split(_KEY_MASSAGE)[1].split(f"\u0020{_KEY_NAME}")[0].replace("{user}", _player_name)
+            content[1:-2]
+            .split(_KEY_MASSAGE)[1]
+            .split(f"\u0020{_KEY_NAME}")[0]
+            .replace("{user}", _player_name)
         )
         if "\uff08" in text or "\uff09" in text:
             text = text.replace("\uff08", "").replace("\uff09", "")
             gray = True
         else:
             gray = False
-    elif _KEY_NARRATION in input:
-        text = input[1:-2].split(_KEY_NARRATION)[1].split(f"\u0020{_KEY_CLIP}")[0]
+    elif _KEY_NARRATION in content:
+        text = content[1:-2].split(_KEY_NARRATION)[1].split(f"\u0020{_KEY_CLIP}")[0]
         gray = True
     return (text, gray)
 
 
-def get_name(input: str) -> str:
-    if _KEY_THUMBNIAL in input:
-        name = input[1:-2].split(f"\u0020{_KEY_NAME}")[1].split(f"\u0020{_KEY_THUMBNIAL}")[0]
+def get_name(content: str) -> str:
+    if _KEY_THUMBNIAL in content:
+        name = content[1:-2].split(f"\u0020{_KEY_NAME}")[1].split(f"\u0020{_KEY_THUMBNIAL}")[0]
     else:
-        name = input[1:-2].split(f"\u0020{_KEY_NAME}")[1].split(f"\u0020{_KEY_CLIP}")[0]
+        name = content[1:-2].split(f"\u0020{_KEY_NAME}")[1].split(f"\u0020{_KEY_CLIP}")[0]
     return name
 
 
-def get_clip(input: str):
-    clip = input[1:-2].split(f"\u0020{_KEY_CLIP}")[1].replace("\\", "")
+def get_clip(content: str):
+    clip = content[1:-2].split(f"\u0020{_KEY_CLIP}")[1].replace("\\", "")
     data = json.loads(clip)
     return data
 
