@@ -49,10 +49,10 @@ class FrameProcess(object):
         sys.stdout.flush()
         _lock.release()
 
-    def to_frame(self, input: str) -> None:
-        image_folder_path = f"{_CACHE_PATH}/{input.split('.')[0]}"
+    def to_frame(self, filename: str) -> None:
+        image_folder_path = f"{_CACHE_PATH}/{filename.split('.')[0]}"
         os.makedirs(image_folder_path, exist_ok=True)
-        video_path = f"{_VIDEO_PATH}/{input}"
+        video_path = f"{_VIDEO_PATH}/{filename}"
         vc = cv2.VideoCapture(video_path)
         self.fps = vc.get(cv2.CAP_PROP_FPS)
         width = int(vc.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -74,7 +74,7 @@ class FrameProcess(object):
         wait(frame_tasks, return_when="ALL_COMPLETED")
         print("\u0020", "Pre-Progress finished")
 
-    def get_fps(self, input: str) -> None:
-        video_path = f"{_VIDEO_PATH}/{input}"
+    def get_fps(self, filename: str) -> None:
+        video_path = f"{_VIDEO_PATH}/{filename}"
         vc = cv2.VideoCapture(video_path)
         self.fps = vc.get(cv2.CAP_PROP_FPS)
