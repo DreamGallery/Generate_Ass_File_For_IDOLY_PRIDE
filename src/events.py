@@ -31,22 +31,22 @@ class AssEvents(object):
         self.Effect = Effect
         self.Text = Text
 
-    def from_dialogue(self, input: str) -> None:
-        self.Start = to_time(get_clip(input)["_startTime"])
-        self.Duration = get_clip(input)["_duration"]
-        self.End = end_time(get_clip(input)["_startTime"], get_clip(input)["_duration"])
-        if get_text(input)[1]:
+    def from_dialogue(self, content: str) -> None:
+        self.Start = to_time(get_clip(content)["_startTime"])
+        self.Duration = get_clip(content)["_duration"]
+        self.End = end_time(get_clip(content)["_startTime"], get_clip(content)["_duration"])
+        if get_text(content)[1]:
             self.Style = "IdolyPride Gray"
         else:
             self.Style = "IdolyPride Normal"
-        if _KEY_NARRATION in input:
+        if _KEY_NARRATION in content:
             self.Name = ""
         else:
-            if get_name(input) == "{user}":
+            if get_name(content) == "{user}":
                 self.Name = "マネージャー"
             else:
-                self.Name = get_name(input)
-        self.Text = get_text(input)[0]
+                self.Name = get_name(content)
+        self.Text = get_text(content)[0]
 
     def echo_dialogue(self) -> str:
         dialogue = "Dialogue: %d,%s,%s,%s,%s,%d,%d,%d,%s,%s" % (
@@ -87,17 +87,3 @@ class AssEvents(object):
             format = format + f"\u0020{attribute},"
         format = format[:-1]
         return format
-
-
-# def to_ass_dial(input: str) -> str:
-#     ass_events_1 = ass_events()
-#     ass_events_1.from_dialogue(input)
-#     dialogue = ass_events_1.echo_dialogue()
-#     return dialogue
-
-
-# def to_ass_comm(input: str) -> str:
-#     ass_events_1 = ass_events()
-#     ass_events_1.from_dialogue(input)
-#     comment = ass_events_1.echo_comment()
-#     return comment

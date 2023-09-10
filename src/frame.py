@@ -18,7 +18,7 @@ class FrameProcess(object):
     def one_task(
         self,
         image_list: list[tuple[str, cv2.UMat]],
-        frame: cv2.UMat,
+        frame: cv2.typing.MatLike,
         width: int,
         height: int,
         milliseconds: float,
@@ -47,9 +47,9 @@ class FrameProcess(object):
         sys.stdout.flush()
         _lock.release()
 
-    def to_frame(self, input: str) -> list[tuple[str, cv2.UMat]]:
+    def to_frame(self, filename: str) -> list[tuple[str, cv2.UMat]]:
         image_list: list[tuple[str, cv2.UMat]] = []
-        video_path = f"{_VIDEO_PATH}/{input}"
+        video_path = f"{_VIDEO_PATH}/{filename}"
         vc = cv2.VideoCapture(video_path)
         self.fps = vc.get(cv2.CAP_PROP_FPS)
         width = int(vc.get(cv2.CAP_PROP_FRAME_WIDTH))
