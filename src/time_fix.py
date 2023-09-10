@@ -19,7 +19,6 @@ def time_fix(
     event: AssEvents,
     image_list: list[tuple[str, cv2.typing.MatLike]],
     start_file_index: int,
-    target: str,
     stream: FrameProcess,
 ) -> int:
     text = event.Text

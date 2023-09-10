@@ -36,7 +36,6 @@ start_file_index = int(0)
 content = script_info + "\n" + garbage + "\n" + style + "\n" + event
 print("ASS-Generate-Progress start")
 
-target = video_file_name.split(".")[0]
 image_list.sort(key=lambda x: float(x[0]))
 
 for dial in dial_list:
@@ -45,7 +44,7 @@ for dial in dial_list:
         continue
     dial_event = AssEvents()
     dial_event.from_dialogue(dial)
-    next_file_index = time_fix(dial_event, image_list, start_file_index, target, stream)
+    next_file_index = time_fix(dial_event, image_list, start_file_index, stream)
     start_file_index = next_file_index
     if need_comment:
         content = content + f"{dial_event.echo_dialogue()}" + "\n" + f"{dial_event.echo_comment()}" + "\n"
