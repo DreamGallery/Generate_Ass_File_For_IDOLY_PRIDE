@@ -66,7 +66,7 @@ for dial in dial_list:
     print(
         f"ASS-Generate-Progress:({'{:0>3d}'.format(current_count)}/{'{:0>3d}'.format(len(dial_list))})"
         + "{:>3d}%: ".format(percent),
-        "\033[33m▓\033[0m" * (percent // 2),
+        "▮" * (percent // 2),
         end="",
     )
     print("\u0020", dial_event.Text, dial_event.Start, dial_event.End)
