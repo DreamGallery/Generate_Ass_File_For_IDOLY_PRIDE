@@ -1,4 +1,5 @@
 import cv2
+import string
 import numpy as np
 from src.read_ini import config
 from PIL import Image, ImageDraw, ImageFont
@@ -29,7 +30,7 @@ def draw_text(
     char_info: list[tuple[FreeTypeFont, int]] = []
     text_height = int(0)
     for char in text:
-        if char.encode("utf-8").isalpha():
+        if char.encode("utf-8").isalpha() or char in string.punctuation:
             font = font_alpha
         elif char.encode("utf-8").isdigit():
             font = font_digit

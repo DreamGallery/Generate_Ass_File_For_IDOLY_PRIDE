@@ -41,7 +41,7 @@ class FrameProcess(object):
         percent = round(_current_count / total_fps * 100)
         print(
             f"\rPre-Progress:({_current_count}/{total_fps})" + "{}%: ".format(percent),
-            "▓" * (percent // 2),
+            "▮" * (percent // 2),
             end="",
         )
         sys.stdout.flush()
