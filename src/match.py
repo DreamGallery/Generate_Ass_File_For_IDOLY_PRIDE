@@ -1,3 +1,4 @@
+import string
 import cv2, cv2.typing
 import numpy as np
 from src.read_ini import config
@@ -29,7 +30,7 @@ def draw_text(
     char_info: list[tuple[FreeTypeFont, int]] = []
     text_height = int(0)
     for char in text:
-        if char.encode("utf-8").isalpha():
+        if char.encode("utf-8").isalpha() or char in string.punctuation:
             font = font_alpha
         elif char.encode("utf-8").isdigit():
             font = font_digit
@@ -60,7 +61,7 @@ def draw_text(
         tmp_width = tmp_width + char_info[index][1] + kerning
     binary: list[cv2.typing.MatLike] = []
     mask: list[cv2.typing.MatLike] = []
-    kernel = np.ones((3, 3), np.uint8)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
     if len(text) >= _half_split_length:
         spilt_pixel = sum(
             list(item[1] for item in char_info[: len(text) // 2]),
