@@ -1,7 +1,6 @@
 import cv2, cv2.typing
 import os, sys
 import threading
-import numpy as np
 from src.read_ini import config
 from src.match import to_binary_adaptive
 from concurrent.futures import ThreadPoolExecutor, wait
@@ -36,7 +35,7 @@ class FrameProcess(object):
         ]
         image_path = f"{image_folder_path}/{name}.png"
         binary = to_binary_adaptive(img, 11, 0)
-        kernel = np.ones((3, 3), np.uint8)
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
         binary_opn = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
         cv2.imwrite(image_path, binary_opn)
         _lock.acquire()
@@ -44,7 +43,7 @@ class FrameProcess(object):
         percent = round(_current_count / total_fps * 100)
         print(
             f"\rPre-Progress:({_current_count}/{total_fps})" + "{}%: ".format(percent),
-            "▓" * (percent // 2),
+            "▮" * (percent // 2),
             end="",
         )
         sys.stdout.flush()
