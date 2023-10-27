@@ -18,6 +18,7 @@ def extract(filename: str) -> list[str]:
         for line in f:
             if "text" in line:
                 dial_list.append(line)
+    dial_list.sort(key=lambda x: float(get_clip(x)["_startTime"]))
     return dial_list
 
 
