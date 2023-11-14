@@ -1,3 +1,4 @@
+import os
 from src.adv_text import *
 from src.events import AssEvents
 from src.read_ini import config
@@ -5,8 +6,6 @@ from src.ass_part import script_info, garbage, style, event
 
 
 ASS_PATH = config.get("File PATH", "ASS_PATH")
-game_file_name = config.get("Info", "game_file_name")
-
 
 # only convert from game file without time-fix by frame
 def generate_ass(filename: str):
@@ -25,4 +24,7 @@ def generate_ass(filename: str):
 
 
 if __name__ == "__main__":
-    generate_ass(game_file_name)
+    for filepath,dirnames,filenames in os.walk(ASS_PATH):
+        for filename in filenames:
+            if filename.endswith(".txt"):
+                generate_ass(filename)
