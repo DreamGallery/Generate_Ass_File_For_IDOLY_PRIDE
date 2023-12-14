@@ -7,9 +7,9 @@ from src.frame import FrameProcess
 from src.ass_part import script_info, garbage, style, event
 
 
-ASS_PATH = config.get("File PATH", "ASS_PATH")
-TXT_PATH = config.get("File PATH", "TXT_PATH")
-CACHE_PATH = config.get("File PATH", "CACHE_PATH")
+ASS_PATH = config.get("File Path", "ASS_PATH")
+TXT_PATH = config.get("File Path", "TXT_PATH")
+CACHE_PATH = config.get("File Path", "CACHE_PATH")
 game_file_name = config.get("Info", "game_file_name")
 video_file_name = config.get("Info", "video_file_name")
 match_only = config.getboolean("Arg", "match_only")
@@ -38,8 +38,8 @@ if MV_exists:
         dial_list.append(dial)
 
 files: list[str] = []
-current_count = int(0)
-start_file_index = int(0)
+current_count = 0
+start_file_index = 0
 content = script_info + "\n" + garbage + "\n" + style + "\n" + event
 print("ASS-Generate-Progress start")
 
