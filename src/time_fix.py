@@ -8,9 +8,9 @@ from src.adv_text import to_time
 from src.match import draw_text, compare
 
 
-_FONT_PATH = json.loads(config.get("File PATH", "FONT_PATH"))
-_fontsize = json.loads(config.get("Font Config", "fontsize"))
-_strokewidth = config.getint("Font Config", "strokewidth")
+_FONT_PATH = json.loads(config.get("File Path", "FONT_PATH"))
+_font_size = json.loads(config.get("Font Config", "font_size"))
+_stroke_width = config.getint("Font Config", "stroke_width")
 _kerning = config.getint("Font Config", "kerning")
 _threshold = config.getfloat("Arg", "threshold")
 
@@ -22,7 +22,7 @@ def time_fix(
     stream: FrameProcess,
 ) -> int:
     text = event.Text
-    binary, mask = draw_text(text, _FONT_PATH, _fontsize, _strokewidth, _kerning)
+    binary, mask = draw_text(text, _FONT_PATH, _font_size, _stroke_width, _kerning)
     for frame_pack in image_list[start_file_index:]:
         if compare(frame_pack[1], binary, _threshold, mask=mask):
             start_time = float(frame_pack[0][:-1])
