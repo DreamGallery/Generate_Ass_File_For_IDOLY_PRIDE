@@ -5,7 +5,7 @@ from src.read_ini import config
 from src.ass_part import script_info, garbage, style, event
 
 
-ASS_PATH = config.get("File PATH", "ASS_PATH")
+ASS_PATH = config.get("File Path", "ASS_PATH")
 
 # only convert from game file without time-fix by frame
 def generate_ass(filename: str):

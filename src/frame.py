@@ -6,10 +6,10 @@ from src.match import to_binary_adaptive
 from concurrent.futures import ThreadPoolExecutor, wait
 
 
-_VIDEO_PATH = config.get("File PATH", "VIDEO_PATH")
+_VIDEO_PATH = config.get("File Path", "VIDEO_PATH")
 
 _lock = threading.Lock()
-_current_count = int(0)
+_current_count = 0
 
 
 class FrameProcess(object):

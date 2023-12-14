@@ -21,14 +21,14 @@ def to_binary_adaptive(img: cv2.UMat, blocksize: int, C: float) -> cv2.UMat:
 
 
 def draw_text(
-    text: str, font_path: list[str], fontsize: list[int], strokewidth: int, kerning: int
+    text: str, font_path: list[str], font_size: list[int], stroke_width: int, kerning: int
 ) -> tuple[list[cv2.UMat], list[cv2.UMat]]:
-    font_japan = ImageFont.truetype(font_path[0], fontsize[0])
-    font_alpha = ImageFont.truetype(font_path[1], fontsize[1])
-    font_digit = ImageFont.truetype(font_path[2], fontsize[2])
+    font_japan = ImageFont.truetype(font_path[0], font_size[0])
+    font_alpha = ImageFont.truetype(font_path[1], font_size[1])
+    font_digit = ImageFont.truetype(font_path[2], font_size[2])
 
     char_info: list[tuple[FreeTypeFont, int]] = []
-    text_height = int(0)
+    text_height = 0
     for char in text:
         if char.encode("utf-8").isalpha() or char in string.punctuation:
             font = font_alpha
@@ -36,26 +36,26 @@ def draw_text(
             font = font_digit
         else:
             font = font_japan
-        char_bbox = font.getbbox(char, stroke_width=strokewidth)
-        char_width = char_bbox[2] - char_bbox[0] - strokewidth
+        char_bbox = font.getbbox(char, stroke_width=stroke_width)
+        char_width = char_bbox[2] - char_bbox[0] - stroke_width
         text_height = max((char_bbox[3] - char_bbox[1]), text_height)
         char_info.append([font, char_width])
 
-    text_width = int(0)
+    text_width = 0
     for info in char_info:
         text_width += info[1]
     text_size = ((text_width + (len(text) - 1) * kerning), text_height)
     text_img = Image.new("RGBA", text_size)
     draw = ImageDraw.Draw(text_img)
 
-    tmp_width = int(0)
+    tmp_width = 0
     for index, char in enumerate(text):
         draw.text(
             (((char_info[index][1]) // 2 + tmp_width), (text_size[1] // 2)),
             char,
             anchor="mm",
             font=char_info[index][0],
-            stroke_width=strokewidth,
+            stroke_width=stroke_width,
             stroke_fill=(32, 32, 32),
         )
         tmp_width = tmp_width + char_info[index][1] + kerning

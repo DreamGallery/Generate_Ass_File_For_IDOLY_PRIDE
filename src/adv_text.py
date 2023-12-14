@@ -2,14 +2,14 @@ import json
 from src.read_ini import config
 
 
-_TXT_PATH = config.get("File PATH", "TXT_PATH")
+_TXT_PATH = config.get("File Path", "TXT_PATH")
 _player_name = config.get("Info", "player_name")
-_KEY_MASSAGE = config.get("Text KEY", "KEY_MASSAGE")
-_KEY_CLIP = config.get("Text KEY", "KEY_CLIP")
-_KEY_NAME = config.get("Text KEY", "KEY_NAME")
-_KEY_NARRATION = config.get("Text KEY", "KEY_NARRATION")
-_KEY_THUMBNIAL = config.get("Text KEY", "KEY_THUMBNIAL")
-_KEY_TITLE = config.get("Text KEY", "KEY_TITLE")
+_KEY_MASSAGE = config.get("Text Key", "KEY_MASSAGE")
+_KEY_CLIP = config.get("Text Key", "KEY_CLIP")
+_KEY_NAME = config.get("Text Key", "KEY_NAME")
+_KEY_NARRATION = config.get("Text Key", "KEY_NARRATION")
+_KEY_THUMBNIAL = config.get("Text Key", "KEY_THUMBNIAL")
+_KEY_TITLE = config.get("Text Key", "KEY_TITLE")
 
 
 def extract(filename: str) -> list[str]:
