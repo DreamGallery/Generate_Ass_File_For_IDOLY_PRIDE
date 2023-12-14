@@ -1,7 +1,7 @@
 from src.adv_text import *
 from src.read_ini import config
 
-_KEY_NARRATION = config.get("Text KEY", "KEY_NARRATION")
+_KEY_NARRATION = config.get("Text Key", "KEY_NARRATION")
 
 
 class AssEvents(object):
